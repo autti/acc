@@ -8,19 +8,15 @@ python:
   - "2.7"
   - "3.5"
 
-addons:
-  apt:
-    packages:
-      - python-scipy
-      - python3-scipy
-      - python-flake8
-
 install:
   - pip install coveralls
+  - pip install pytest
+  - pip install pyflake8
+  - pip install scipy
   - python setup.py -q install
 
 script:
-  - coverage run --source=acc python setup.py test
+    - coverage run --source=acc pytest
 
 after_script:
   - flake8 acc

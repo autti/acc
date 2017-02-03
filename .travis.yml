@@ -14,7 +14,7 @@ install:
   - python setup.py -q install
 
 script:
-    - coverage run --source=acc pytest
+    - coverage run --source=acc setup.py test
 
 after_script:
   - flake8 acc

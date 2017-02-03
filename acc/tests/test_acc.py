@@ -1,11 +1,8 @@
 #!/usr/bin/env python
-import sys
-import time
-import json
 import pytest
 
 from .maneuverplots import Conversions as CV, CruiseButtons as CB
-from .maneuver import *
+from .maneuver import Maneuver
 from acc.cruise import control
 
 maneuvers = [
@@ -124,7 +121,7 @@ maneuvers = [
         initial_speed=0.,
         lead_relevancy=True,
         initial_distance_lead=4.,
-        speed_lead_values=[0,  0, 45],
+        speed_lead_values=[0, 0, 45],
         speed_lead_breakpoints=[0, 10., 40.],
         cruise_button_presses=[(CB.DECEL_SET, 1.2), (0, 1.3),
                                (CB.RES_ACCEL, 1.4), (0.0, 1.5),
@@ -183,6 +180,7 @@ MIN_SCORE = 0
 expected = [MIN_SCORE for m in maneuvers]
 
 testdata = zip(maneuvers, expected)
+
 
 @pytest.mark.parametrize("maneuver,score", testdata, ids=[m.title for m in maneuvers])
 def test_maneuvers(maneuver, score):

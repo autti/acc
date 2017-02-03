@@ -1,9 +1,6 @@
 #!/usr/bin/env python
-import os
 import multiprocessing
 import time
-import ctypes
-import platform
 
 import numpy as np
 
@@ -12,39 +9,13 @@ CLOCK_MONOTONIC_RAW = 4  # see <linux/time.h>
 CLOCK_BOOTTIME = 7
 
 
-class timespec(ctypes.Structure):
-    _fields_ = [
-        ('tv_sec', ctypes.c_long),
-        ('tv_nsec', ctypes.c_long),
-    ]
-
-
-try:
-    libc = ctypes.CDLL('libc.so', use_errno=True)
-except OSError:
-    try:
-        libc = ctypes.CDLL('libc.so.6', use_errno=True)
-    except OSError:
-        libc = None
-
-if libc is not None:
-    libc.clock_gettime.argtypes = [ctypes.c_int, ctypes.POINTER(timespec)]
+# TODO: Look at the OpenPilot repo if more accurate timing is neeed.
+def clock_gettime(clk_id):
+    return time.time()
 
 
 def sec_since_boot():
     return clock_gettime(CLOCK_BOOTTIME)
-
-
-def clock_gettime(clk_id):
-    if platform.system().lower() == "darwin":
-        # TODO: fix this
-        return time.time()
-    else:
-        t = timespec()
-        if libc.clock_gettime(clk_id, ctypes.pointer(t)) != 0:
-            errno_ = ctypes.get_errno()
-            raise OSError(errno_, os.strerror(errno_))
-        return t.tv_sec + t.tv_nsec * 1e-9
 
 
 class Ratekeeper(object):

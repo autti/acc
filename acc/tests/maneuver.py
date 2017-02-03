@@ -1,6 +1,6 @@
 import os
 from enum import Enum
-from plant import Plant
+from .plant import Plant
 import numpy as np
 
 

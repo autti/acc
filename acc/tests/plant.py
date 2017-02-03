@@ -76,8 +76,8 @@ class Ratekeeper(object):
     def monitor_time(self):
         remaining = self._next_frame_time - sec_since_boot()
         self._next_frame_time += self._interval
-        if remaining < -self._print_delay_threshold:
-            print self._process_name, "lagging by", round(-remaining * 1000, 2), "ms"
+        if remaining < -self._print_delay_threshold and self.verbosity > 1:
+            print(self._process_name, "lagging by", round(-remaining * 1000, 2), "ms")
         self._frame += 1
         self._remaining = remaining
 

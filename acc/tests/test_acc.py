@@ -4,8 +4,8 @@ import time
 import json
 import pytest
 
-from maneuverplots import Conversions as CV, CruiseButtons as CB
-from maneuver import *
+from .maneuverplots import Conversions as CV, CruiseButtons as CB
+from .maneuver import *
 from acc.cruise import control
 
 maneuvers = [
@@ -190,4 +190,4 @@ def test_maneuvers(maneuver, score):
     assert score < MIN_SCORE
 
     if verbosity > 0:
-        print(man.title, score)
+        print(maneuver.title, score)

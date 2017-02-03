@@ -17,7 +17,7 @@ class PyTest(TestCommand):
 
 setup(
     name='acc',
-    version='0.1',
+    version='0.1.1',
     url='http://github.com/autti/acc',
     license='MIT',
     author='Udacity ND013 members',

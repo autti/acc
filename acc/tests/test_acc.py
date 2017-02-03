@@ -192,7 +192,7 @@ maneuvers = [
     )
 ]
 
-MIN_SCORE = 0
+MIN_SCORE = 10
 
 # We expect the score to be 0 when it crashes and higher based on how comfortable the ride was.
 expected = [MIN_SCORE for m in maneuvers]

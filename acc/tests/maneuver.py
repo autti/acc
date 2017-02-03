@@ -22,7 +22,7 @@ class Maneuver(object):
         self.duration = duration
         self.title = title
 
-    def evaluate(self, control=None, verbosity=0):
+    def evaluate(self, control=None, verbosity=0, min_gap=5):
         """runs the plant sim and returns (score, run_data)"""
         plant = Plant(
             lead_relevancy=self.lead_relevancy,
@@ -56,10 +56,15 @@ class Maneuver(object):
                                                                          cruise_buttons=current_button,
                                                                          grade=grade)
 
+            # If the car in front is less than min_gap away, give it the worst score
+            # and abort.
+            if car_in_front < min_gap:
+                return 0
+
             brake, gas = control(speed, acceleration,
                                  car_in_front, steer_torque)
 
-        # TODO: Calculate score, for now it always returns 0.
+        # TODO: Calculate score, for now it always returns 10.
         # It should be 0 when the car crashes and higher if it doesn't.
-        score = 0
+        score = 10
         return score

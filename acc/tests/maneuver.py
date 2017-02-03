@@ -1,5 +1,3 @@
-import os
-from enum import Enum
 from .plant import Plant
 import numpy as np
 
@@ -33,9 +31,6 @@ class Maneuver(object):
             verbosity=verbosity,
         )
 
-        event_queue = sorted(self.cruise_button_presses,
-                             key=lambda a: a[1])[::-1]
-
         buttons_sorted = sorted(self.cruise_button_presses, key=lambda a: a[1])
         current_button = 0
 
@@ -63,8 +58,6 @@ class Maneuver(object):
 
             brake, gas = control(speed, acceleration,
                                  car_in_front, steer_torque)
-
-            v_rel = speed_lead - speed if self.lead_relevancy else 0.
 
         # TODO: Calculate score, for now it always returns 0.
         # It should be 0 when the car crashes and higher if it doesn't.

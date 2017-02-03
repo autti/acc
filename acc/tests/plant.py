@@ -62,10 +62,6 @@ class Ratekeeper(object):
     def frame(self):
         return self._frame
 
-    @property
-    def remaining(self):
-        return self._remaining
-
     # Maintain loop rate by calling this at the end of each loop
     def keep_time(self):
         self.monitor_time()
@@ -233,21 +229,3 @@ class Plant(object):
 
         self.rk.keep_time()
         return (speed, acceleration, car_in_front, steer_torque)
-
-
-# simple engage in standalone mode
-def plant_thread(control, rate=100):
-    plant = Plant(rate)
-    brake = 0
-    gas = 0
-    steer_torque = 0
-
-    while 1:
-        speed, acceleration, car_in_front, steer_torque = plant.step(brake=brake,
-                                                                     gas=gas)
-        brake, gas = control(speed, acceleration, car_in_front, steer_torque)
-
-
-if __name__ == "__main__":
-    from acc.cruise import control
-    plant_thread(control)

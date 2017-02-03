@@ -1,9 +1,27 @@
 #!/usr/bin/env python
 import pytest
 
-from .maneuverplots import Conversions as CV, CruiseButtons as CB
 from .maneuver import Maneuver
 from acc.cruise import control
+
+
+class CV:
+    MPH_TO_MS = 1.609 / 3.6
+    MS_TO_MPH = 3.6 / 1.609
+    KPH_TO_MS = 1. / 3.6
+    MS_TO_KPH = 3.6
+    MPH_TO_KPH = 1.609
+    KPH_TO_MPH = 1. / 1.609
+    KNOTS_TO_MS = 1 / 1.9438
+    MS_TO_KNOTS = 1.9438
+
+
+class CB:
+    RES_ACCEL = 4
+    DECEL_SET = 3
+    CANCEL = 2
+    MAIN = 1
+
 
 maneuvers = [
     Maneuver(

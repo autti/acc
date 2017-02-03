@@ -1,6 +1,6 @@
 # acc
 [![Build Status](https://travis-ci.org/autti/acc.svg?branch=master)](https://travis-ci.org/autti/acc)
-[![Coverage Status](https://coveralls.io/repos/github/autti/acc/badge.svg?branch=master)](https://coveralls.  io/github/autti/acc?branch=master) 
+[![Coverage Status](https://coveralls.io/repos/github/autti/acc/badge.svg?branch=master)](https://coveralls.io/github/autti/acc?branch=master) 
 
 Adaptive Cruise Control. Udacity micro challenge.
 

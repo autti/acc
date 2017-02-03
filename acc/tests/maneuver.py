@@ -66,4 +66,7 @@ class Maneuver(object):
 
             v_rel = speed_lead - speed if self.lead_relevancy else 0.
 
-        return None
+        # TODO: Calculate score, for now it always returns 0.
+        # It should be 0 when the car crashes and higher if it doesn't.
+        score = 0
+        return score

@@ -177,8 +177,9 @@ maneuvers = [
     )
 ]
 
-MIN_SCORE = 0.1
-# We expect the score to be low.
+MIN_SCORE = 0
+
+# We expect the score to be 0 when it crashes and higher based on how comfortable the ride was.
 expected = [MIN_SCORE for m in maneuvers]
 
 testdata = zip(maneuvers, expected)
@@ -187,7 +188,8 @@ testdata = zip(maneuvers, expected)
 def test_maneuvers(maneuver, score):
     verbosity = pytest.config.getoption('verbose')
     score = maneuver.evaluate(control=control, verbosity=verbosity)
-    assert score < MIN_SCORE
 
-    if verbosity > 0:
+    assert score >= MIN_SCORE
+
+    if verbosity > 0 or True:
         print(maneuver.title, score)

@@ -15,14 +15,15 @@ addons:
       - python3-scipy
       - python-flake8
 
-before_install:
-    - pip install coveralls
+install:
+  - pip install coveralls
+  - python setup.py -q install
 
 script:
   - coverage run --source=acc python setup.py test
 
 after_script:
-  - flake8 .
+  - flake8 acc
 
 after_success:
   - coveralls

@@ -16,7 +16,10 @@ addons:
       - python-flake8
 
 script:
-  - python setup.py test
+  - coverage run --source=acc python setup.py test
 
 after_script:
   - flake8 .
+
+after_success:
+  - coveralls

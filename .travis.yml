@@ -1,0 +1,22 @@
+language: python
+
+cache: pip
+sudo: required
+dist: xenial
+
+python:
+  - "2.7"
+  - "3.5"
+
+addons:
+  apt:
+    packages:
+      - python-scipy
+      - python3-scipy
+      - python-flake8
+
+script:
+  - python setup.py test
+
+after_script:
+  - flake8 .

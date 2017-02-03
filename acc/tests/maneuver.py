@@ -38,6 +38,14 @@ class Maneuver(object):
         gas = 0
         steer_torque = 0
 
+        previous_state = 0 # 3 possible states(accelerating(1), not accelerating(0), braking(-1))
+        neg_score = 0.
+        prev_accel = 0.
+        # TODO: calibrate this threshold to denote maximum discomfort allowed
+        neg_score_threshold = 20.
+        # TODO: calibrate this constant for scaling rate of acceleration
+        accel_const = 1.
+
         while plant.current_time() < self.duration:
             while buttons_sorted and plant.current_time() >= buttons_sorted[0][1]:
                 current_button = buttons_sorted[0][0]
@@ -62,9 +70,34 @@ class Maneuver(object):
                 return 0
 
             brake, gas = control(speed, acceleration,
-                                 car_in_front, steer_torque)
+                                 car_in_front, min_gap, steer_torque)
 
-        # TODO: Calculate score, for now it always returns 10.
-        # It should be 0 when the car crashes and higher if it doesn't.
-        score = 10
+            # TODO: Calculate score, for now it always returns 10.
+            # It should be 0 when the car crashes and higher if it doesn't.
+
+            if gas > 0:
+                # accelerating
+                new_state = 1
+            elif brake > 0:
+                # braking
+                new_state = -1
+            else:
+                # not accelerating
+                new_state = 0
+
+            # getting the rate of change of acceleration
+            # TODO: add division by exact time, if relevent(did not delve deep into timekeeping)
+            rate_accel = acceleration - prev_accel
+            prev_accel = acceleration
+
+            # The higher the value of neg_score, worse the controller.
+            # multiplication with rate_accel scales the change based on the speed of change.
+            neg_score += abs((new_state - previous_state) * rate_accel * accel_const)
+            previous_state = new_state
+            
+        neg_score /= self.duration
+        
+        assert neg_score <= neg_score_threshold
+        # not sure how to convert neg_score to score. please suggest
+        score = 0
         return score

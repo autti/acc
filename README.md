@@ -29,3 +29,4 @@ python setup.py test
  - [ ] Create assertions for reasonable behavior when implementing the maneuver and fail the tests when those do not pass. For example, distance to car in front is 0, or target speed is different to actual speed.
  - [ ] Implement plotting of PID curves to compare solutions.
  - [ ] Replace `gas=0` and `brake=0` for a simple solution that passes the tests.
+ - [ ] Decide if we need to run the tests in real time or do something different.

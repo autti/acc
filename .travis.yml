@@ -9,9 +9,7 @@ python:
   - "3.5"
 
 install:
-  - pip install coveralls
-  - pip install pytest
-  - pip install pyflake8
+  - pip install coveralls pytest flake8
   - pip install scipy
   - python setup.py -q install
 

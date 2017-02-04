@@ -64,10 +64,8 @@ class Maneuver(object):
                                                                          cruise_buttons=current_button,
                                                                          grade=grade)
 
-            # If the car in front is less than min_gap away, give it the worst score
-            # and abort.
-            if car_in_front < min_gap:
-                return 0
+            # If the car in front is less than min_gap away abort.
+            assert car_in_front < min_gap
 
             brake, gas = control(speed, acceleration,
                                  car_in_front, min_gap, steer_torque)
@@ -94,10 +92,8 @@ class Maneuver(object):
             # multiplication with rate_accel scales the change based on the speed of change.
             neg_score += abs((new_state - previous_state) * rate_accel * accel_const)
             previous_state = new_state
-            
+
         neg_score /= self.duration
-        
         assert neg_score <= neg_score_threshold
-        # not sure how to convert neg_score to score. please suggest
-        score = 0
-        return score
+
+        return

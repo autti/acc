@@ -192,10 +192,7 @@ maneuvers = [
     )
 ]
 
-MIN_SCORE = 10
-
-# We expect the score to be 0 when it crashes and higher based on how comfortable the ride was.
-expected = [MIN_SCORE for m in maneuvers]
+expected = [None for m in maneuvers]
 
 testdata = zip(maneuvers, expected)
 
@@ -203,9 +200,5 @@ testdata = zip(maneuvers, expected)
 @pytest.mark.parametrize("maneuver,score", testdata, ids=[m.title for m in maneuvers])
 def test_maneuvers(maneuver, score):
     verbosity = pytest.config.getoption('verbose')
-    score = maneuver.evaluate(control=control, verbosity=verbosity)
-
-    assert score >= MIN_SCORE
-
-    if verbosity > 0 or True:
-        print(maneuver.title, score)
+    # assertions in evaluate will make tests fail if needed.
+    maneuver.evaluate(control=control, verbosity=verbosity)

@@ -16,6 +16,8 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, desired_speed=None
     K_d = .2
 
     control = 0
+    accel_new = 0
+    brake_new = 0
 
     # If the cruise control speed is not set, let's give the variable a sensible setting.
     if desired_speed is None:
@@ -43,9 +45,7 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, desired_speed=None
 
     if control > 0:
         accel_new = control
-        brake_new = 0
     if control < 0:
-        accel_new = 0
         brake_new = control
 
     brake = .5 * brake_new + .5 * brake

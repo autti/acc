@@ -100,8 +100,6 @@ class Maneuver(object):
                                  brake=brake,
                                  gas=gas)
 
-            # TODO: Calculate score, for now it always returns 10.
-            # It should be 0 when the car crashes and higher if it doesn't.
 
             if gas > 0:
                 # accelerating

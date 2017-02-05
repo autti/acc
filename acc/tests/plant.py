@@ -49,14 +49,16 @@ class Ratekeeper(object):
 
 def car_plant(pos, speed, grade, gas, brake):
     # vehicle parameters
+    g = 9.81
     mass = 1700
     aero_cd = 0.3
-    force_peak = mass * 3.
-    force_brake_peak = -mass * 10.  # 1g
+    # force_peak is maximum acceleration allowed * mass
+    force_peak = mass * 0.4 * g
+    # force_brake_peak is maximum decceleration allowed * mass
+    force_brake_peak = -mass * 0.9 * g
     power_peak = 100000   # 100kW
     speed_base = power_peak / force_peak
     rolling_res = 0.01
-    g = 9.81
     air_density = 1.225
     gas_to_peak_linear_slope = 3.33
     brake_to_peak_linear_slope = 0.2
@@ -159,7 +161,8 @@ class Plant(object):
             v_rel = 0.
 
         # print at 5hz
-        if (self.rk.frame % (self.rate / 5)) == 0:
+        # if (self.rk.frame % (self.rate / 5)) == 0:
+        if True:
             msg_tmpl = ("%6.2f m  %6.2f m/s  %6.2f m/s2   %.2f ang "
                         "  gas: %.2f  brake: %.2f  steer: %5.2f "
                         "  lead_rel: %6.2f m  %6.2f m/s")

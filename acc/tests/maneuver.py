@@ -131,12 +131,7 @@ class Maneuver(object):
         assert cruise_speed - 1. < speed < cruise_speed + 1.
 
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
-<<<<<<< HEAD
-        vis.show_final_plots()
-=======
         if verbosity >= 4:
             vis.show_final_plots()
-        assert neg_score <= neg_score_threshold
->>>>>>> 9e1a2bdda958f6da4e849a1fc9d50f0d9323af76
 
         return

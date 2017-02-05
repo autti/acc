@@ -51,7 +51,8 @@ class Maneuver(object):
         # this will be faster than showing in real time with animate = True
         # max_speed, max_accel, max_score set the maximum for the y-axis
         # TODO: make this dynamic?
-        vis = Visualizer(animate=True, max_speed=100, max_accel=100, max_score=100)
+        if verbosity >= 4:
+            vis = Visualizer(animate=True, max_speed=100, max_accel=100, max_score=100)
 
         while plant.current_time() < self.duration:
             while buttons_sorted and plant.current_time() >= buttons_sorted[0][1]:
@@ -110,12 +111,15 @@ class Maneuver(object):
             previous_state = new_state
 
             # this updates the plots with latest state
-            vis.update_data(cur_time=plant.current_time(), speed=speed, acceleration=acceleration, \
-                gas_control = gas, brake_control = brake, car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
+            if verbosity >= 4:
+                vis.update_data(cur_time=plant.current_time(), speed=speed, \
+                    acceleration=acceleration, gas_control=gas, brake_control=brake, \
+                    car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
 
         neg_score /= self.duration
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
-        vis.show_final_plots()
+        if verbosity >= 4:
+            vis.show_final_plots()
         assert neg_score <= neg_score_threshold
 
         return

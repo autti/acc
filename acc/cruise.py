@@ -2,12 +2,17 @@
 
 class CruiseControl(object):
     def __init__(self):
-        self.K_p = 10
-        self.K_d = 0
+        self.K_p = 10.
+        self.K_d = 0.
+        self.max_gas = 1
+        self.max_brake = 1
 
         self.d_front_prev = 100
         self.t_safe = .5 # Safe time to apply brake, .5 s.
-        self.prev_setpoint = 0
+        self.prev_setpoint = 0.
+
+    def distance_to_zero(self, speed):
+        return speed**2 / 2 * 2.12
 
     def control(self, speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None, gas=0, brake=0):
         """Adaptive Cruise Control
@@ -19,15 +24,15 @@ class CruiseControl(object):
            car_in_front: distance in meters to the car in front. (m)
            gap: maximum distance to the car in front (m)
         """
-        gas = 0
-        brake = 0
+        gas = 0.
+        brake = 0.
 
         # If the cruise control speed is not set, let's give the variable a sensible setting.
         if cruise_speed is None:
             cruise_speed = speed
 
 
-        delta_distance = car_in_front - 2 * gap
+        delta_distance = car_in_front - gap - self.distance_to_zero(speed)
 
         if delta_distance > 0:
             # if the distance is not too close maintain cruise speed
@@ -37,16 +42,17 @@ class CruiseControl(object):
             set_point = delta_distance
 
         control = self.K_p * set_point + self.K_d * (set_point - self.prev_setpoint)
-        if control > 1:
-            control = 1
-        elif control < -1:
-            control = -1
+        if control > self.max_gas:
+            control = self.max_gas
+        elif control < -self.max_brake:
+            control = -self.max_brake
 
-        if control > 0:
+        if control >= 0:
             gas = control
         if control < 0:
-            gas = control
+            brake = -control
 
+        # print(gas, brake)
         #------set variables from previous value-----
         self.prev_setpoint = set_point
 

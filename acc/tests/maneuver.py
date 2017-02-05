@@ -102,7 +102,7 @@ class Maneuver(object):
 
             # this updates the plots with latest state
             vis.update_data(cur_time=plant.current_time(), speed=speed, acceleration=acceleration, \
-                car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
+                gas_control = gas, brake_control = brake, car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
 
         neg_score /= self.duration
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]

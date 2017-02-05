@@ -1,6 +1,6 @@
 
 
-def control(speed=0, acceleration=0, car_in_front=200, gap=5, gas=0, brake=0):
+def control(speed=0, acceleration=0, car_in_front=200, gap=5, desired_speed=None, gas=0, brake=0):
     """Adaptive Cruise Control
 
        speed: Current car speed (m/s)
@@ -15,6 +15,10 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, gas=0, brake=0):
     K_p = 10
     K_d = .2
 
+    # If the cruise control speed is not set, let's give the variable a sensible setting.
+    if desired_speed is None:
+        desired_speed = speed
+
     d_front_prev = 100
     t_safe = .5 # Safe time to apply brake, .5 s.
 
@@ -24,12 +28,8 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, gas=0, brake=0):
     delta_distance = car_in_front - 2 * min_gap
 
     # Figure out what control signal should be sent to try to match the required speed
-    # if speed != cruise_speed
-        # control = K_p*(speed - cruise_speed)
-        # There is no logic for doing this. Control should be used to control the cruise
-        # speed but we don't have that parameter as of now.
-        control = 0.5
-
+    if speed != desired_speed
+        control = K_p*(speed - desired_speed)
 
     # But override it if we are too close to the car in front.
     if delta_distance < 0:

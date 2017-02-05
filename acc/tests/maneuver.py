@@ -23,7 +23,7 @@ class Maneuver(object):
         self.duration = duration
         self.title = title
 
-    def evaluate(self, control=None, verbosity=0, min_gap=5):
+    def evaluate(self, control=None, verbosity=0, gap=10):
         """runs the plant sim and returns (score, run_data)"""
         plant = Plant(
             lead_relevancy=self.lead_relevancy,
@@ -71,8 +71,12 @@ class Maneuver(object):
                                                                          cruise_buttons=current_button,
                                                                          grade=grade)
 
-            # If the car in front is less than min_gap away abort.
-            assert car_in_front < min_gap
+            # If the car in front reaches zero, that's a crash.
+            assert car_in_front <= 0
+
+            # TODO: Assert the gap parameter is respected during all the maneuver.
+
+            # TODO: Assert the desired speed matches the actual speed at the end of the maneuver.
 
             brake, gas = control(speed, acceleration,
                                  car_in_front, min_gap, steer_torque)

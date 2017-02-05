@@ -62,7 +62,7 @@ class Maneuver(object):
         # this will be faster than showing in real time with animate = True
         # max_speed, max_accel, max_score set the maximum for the y-axis
         # TODO: make this dynamic?
-        vis = Visualizer(animate=False, max_speed=100, max_accel=100, max_score=100)
+        # vis = Visualizer(animate=False, max_speed=100, max_accel=100, max_score=100)
 
         while plant.current_time() < self.duration:
             while speeds_sorted and plant.current_time() >= speeds_sorted[0][1]:
@@ -110,6 +110,8 @@ class Maneuver(object):
             # based on acceptable jerk values given in
             # A SURVEY OF LONGITUDINAL ACCELERATION COMFORT STUDIES
             # IN GROUND TRANSPORTATION VEHICLES by l. l. HOBEROCK
+            # not sure about the validity, real tests should proove this
+            # uncomment this with the acceptable values, this will affect pid consts
             assert -0.3 * 9.81 < rate_accel < 0.3 * 9.81
 
             # The higher the value of neg_score, worse the controller.
@@ -118,8 +120,8 @@ class Maneuver(object):
             previous_state = new_state
 
             # this updates the plots with latest state
-            vis.update_data(cur_time=plant.current_time(), speed=speed, acceleration=acceleration, \
-                gas_control = gas, brake_control = brake, car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
+            # vis.update_data(cur_time=plant.current_time(), speed=speed, acceleration=acceleration, \
+            #     gas_control = gas, brake_control = brake, car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
 
         neg_score /= self.duration
         assert neg_score <= neg_score_threshold
@@ -128,6 +130,6 @@ class Maneuver(object):
         assert cruise_speed - 1. < speed < cruise_speed + 1.
 
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
-        vis.show_final_plots()
+        # vis.show_final_plots()
 
         return

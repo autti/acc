@@ -181,12 +181,4 @@ def test_maneuvers(maneuver, score):
 def manual_run():
     # verbosity = pytest.config.getoption('verbose')
     # assertions in evaluate will make tests fail if needed.
-    maneuver = Maneuver(
-        'while cruising at 40 mph, change cruise speed to 50mph',
-        duration=30.,
-        initial_speed=40. * CV.MPH_TO_MS,
-        cruise_speeds=[(CB.DECEL_SET, 2.), (0, 2.3),
-                               (CB.RES_ACCEL, 10.), (0, 10.1),
-                               (CB.RES_ACCEL, 10.2), (0, 10.3)]
-    )
-    maneuver.evaluate(control=control, verbosity=3)
+    maneuvers[2].evaluate(control=control, verbosity=3)

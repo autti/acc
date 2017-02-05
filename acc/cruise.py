@@ -28,7 +28,7 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, desired_speed=None
     delta_distance = car_in_front - 2 * min_gap
 
     # Figure out what control signal should be sent to try to match the required speed
-    if speed != desired_speed
+    if speed != desired_speed:
         control = K_p*(speed - desired_speed)
 
     # But override it if we are too close to the car in front.

@@ -110,7 +110,7 @@ class Maneuver(object):
             # based on acceptable jerk values given in
             # A SURVEY OF LONGITUDINAL ACCELERATION COMFORT STUDIES
             # IN GROUND TRANSPORTATION VEHICLES by l. l. HOBEROCK
-            assert rate_accel > 0.3 * 9.81
+            assert -0.3 * 9.81 < rate_accel < 0.3 * 9.81
 
             # The higher the value of neg_score, worse the controller.
             # multiplication with rate_accel scales the change based on the speed of change.

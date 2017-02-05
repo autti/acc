@@ -2,7 +2,7 @@
 
 class CruiseControl(object):
     def __init__(self):
-        self.K_p = 1000.
+        self.K_p = 0.1
         self.K_d = 0.
 
         self.d_front_prev = 100
@@ -22,8 +22,6 @@ class CruiseControl(object):
            car_in_front: distance in meters to the car in front. (m)
            gap: maximum distance to the car in front (m)
         """
-        gas = 0.
-        brake = 0.
 
         # If the cruise control speed is not set, let's give the variable a sensible setting.
         if cruise_speed is None:
@@ -48,7 +46,9 @@ class CruiseControl(object):
 
         if control >= 0:
             gas = control
+            brake = 0
         if control < 0:
+            gas = 0
             brake = -control
 
         # print(gas, brake)

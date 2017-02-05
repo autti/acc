@@ -100,7 +100,6 @@ class Plant(object):
 
         self.angle_steer = 0.
         self.gear_choice = 0
-        self.speed, self.speed_prev = speed, 0.
 
         self.esp_disabled = 0
         self.main_on = 1
@@ -109,6 +108,7 @@ class Plant(object):
         self.brake_pressed = 0
         self.distance, self.distance_prev = 0., 0.
         self.speed, self.speed_prev = speed, speed
+        self.acceleration_prev = None
         self.steer_error, self.brake_error, self.steer_not_allowed = 0, 0, 0
         self.gear_shifter = 4   # D gear
         self.pedal_gas = 0
@@ -160,13 +160,16 @@ class Plant(object):
             d_rel = 200.
             v_rel = 0.
 
+        # set sensible value to acceleration for first iteration
+        if self.acceleration_prev == None:
+            self.acceleration_prev = acceleration
         # print at 5hz
         # if (self.rk.frame % (self.rate / 5)) == 0:
         if True:
             msg_tmpl = ("%6.2f m  %6.2f m/s  %6.2f m/s2   %.2f m/s3 "
                         "  gas: %.2f  brake: %.2f  steer: %5.2f "
                         "  lead_rel: %6.2f m  %6.2f m/s")
-            msg = msg_tmpl % (distance, speed, acceleration, ,
+            msg = msg_tmpl % (distance, speed, acceleration, acceleration - self.acceleration_prev,
                               gas, brake, steer_torque, d_rel, v_rel)
 
             if self.verbosity > 2:
@@ -195,6 +198,7 @@ class Plant(object):
         self.speed_prev = speed
         self.distance_prev = distance
         self.distance_lead_prev = distance_lead
+        self.acceleration_prev = acceleration
 
         car_in_front = distance_lead - distance if self.lead_relevancy else 200.
 

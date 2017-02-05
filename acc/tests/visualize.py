@@ -41,7 +41,7 @@ class Visualizer(object):
         ax1s.set_ylim(0, max_accel)
         ax2.set_ylim(0, 300)
         ax3.set_ylim(0, max_score)
-        ax4.set_ylim(0, max_speed)
+        ax4.set_ylim(0, 1)
 
         # set t-limits
         ax1.set_xlim(0, 5.0)

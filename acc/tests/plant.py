@@ -163,10 +163,10 @@ class Plant(object):
         # print at 5hz
         # if (self.rk.frame % (self.rate / 5)) == 0:
         if True:
-            msg_tmpl = ("%6.2f m  %6.2f m/s  %6.2f m/s2   %.2f ang "
+            msg_tmpl = ("%6.2f m  %6.2f m/s  %6.2f m/s2   %.2f m/s3 "
                         "  gas: %.2f  brake: %.2f  steer: %5.2f "
                         "  lead_rel: %6.2f m  %6.2f m/s")
-            msg = msg_tmpl % (distance, speed, acceleration, self.angle_steer,
+            msg = msg_tmpl % (distance, speed, acceleration, ,
                               gas, brake, steer_torque, d_rel, v_rel)
 
             if self.verbosity > 2:

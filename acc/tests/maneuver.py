@@ -82,12 +82,8 @@ class Maneuver(object):
                                                                          v_lead=speed_lead,
                                                                          grade=grade)
 
-            # If the car in front reaches zero, that's a crash.
-            assert car_in_front >= 0
-
-            # TODO: Assert the gap parameter is respected during all the maneuver.
-
-            # TODO: Assert the desired speed matches the actual speed at the end of the maneuver.
+            # Assert the gap parameter is respected during all the maneuver.
+            assert car_in_front >= gap
 
             brake, gas = control.control(speed=speed,
                                  acceleration=acceleration,
@@ -110,6 +106,11 @@ class Maneuver(object):
             # TODO: add division by exact time, if relevent(did not delve deep into timekeeping)
             rate_accel = acceleration - prev_accel
             prev_accel = acceleration
+            
+            # based on acceptable jerk values given in
+            # A SURVEY OF LONGITUDINAL ACCELERATION COMFORT STUDIES
+            # IN GROUND TRANSPORTATION VEHICLES by l. l. HOBEROCK
+            assert rate_accel > 0.3 * 9.81
 
             # The higher the value of neg_score, worse the controller.
             # multiplication with rate_accel scales the change based on the speed of change.
@@ -121,8 +122,12 @@ class Maneuver(object):
                 gas_control = gas, brake_control = brake, car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
 
         neg_score /= self.duration
+        assert neg_score <= neg_score_threshold
+
+        # Assert the desired speed matches the actual speed at the end of the maneuver.
+        assert cruise_speed - 1. < speed < cruise_speed + 1.
+
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
         vis.show_final_plots()
-        assert neg_score <= neg_score_threshold
 
         return

@@ -2,7 +2,7 @@
 
 class CruiseControl(object):
     def __init__(self):
-        self.K_p = 10.
+        self.K_p = 1000.
         self.K_d = 0.
 
         self.d_front_prev = 100
@@ -10,7 +10,7 @@ class CruiseControl(object):
         self.prev_setpoint = 0.
 
     def distance_to_zero(self, speed):
-        return speed**2 / (2 * 2.12)
+        return speed**2 / (2 * 8.7)
 
     def control(self, speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None):
         """Adaptive Cruise Control

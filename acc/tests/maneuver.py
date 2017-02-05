@@ -29,7 +29,7 @@ class Maneuver(object):
         self.speed_lead_breakpoints = kwargs.get(
             "speed_lead_values", [0.0, duration])
 
-        self.cruise_button_presses = kwargs.get("cruise_button_presses", [])
+        self.cruise_speeds = kwargs.get("cruise_speeds", [])
 
         self.duration = duration
         self.title = title
@@ -43,8 +43,8 @@ class Maneuver(object):
             verbosity=verbosity,
         )
 
-        buttons_sorted = sorted(self.cruise_button_presses, key=lambda a: a[1])
-        current_button = 0
+        speeds_sorted = sorted(self.cruise_speeds, key=lambda a: a[1])
+        cruise_speed = 0
 
         brake = 0
         gas = 0
@@ -65,11 +65,12 @@ class Maneuver(object):
         vis = Visualizer(animate=False, max_speed=100, max_accel=100, max_score=100)
 
         while plant.current_time() < self.duration:
-            while buttons_sorted and plant.current_time() >= buttons_sorted[0][1]:
-                current_button = buttons_sorted[0][0]
-                buttons_sorted = buttons_sorted[1:]
+            while speeds_sorted and plant.current_time() >= speeds_sorted[0][1]:
+                # getting the current cruise speed
+                cruise_speed = speeds_sorted[0][0]
+                speeds_sorted = speeds_sorted[1:]
                 if verbosity > 1:
-                    print("current button changed to", current_button)
+                    print("current cruise speed changed to", cruise_speed)
 
             grade = np.interp(plant.current_time(),
                               self.grade_breakpoints, self.grade_values)
@@ -79,7 +80,6 @@ class Maneuver(object):
             speed, acceleration, car_in_front, steer_torque = plant.step(brake=brake,
                                                                          gas=gas,
                                                                          v_lead=speed_lead,
-                                                                         cruise_buttons=current_button,
                                                                          grade=grade)
 
             # If the car in front reaches zero, that's a crash.
@@ -89,16 +89,11 @@ class Maneuver(object):
 
             # TODO: Assert the desired speed matches the actual speed at the end of the maneuver.
 
-            # TODO: Figure out how to set the desired speed.
-            desired_speed=50
-
             brake, gas = control.control(speed=speed,
                                  acceleration=acceleration,
                                  car_in_front=car_in_front,
                                  gap=gap,
-                                 cruise_speed=desired_speed,
-                                 brake=brake,
-                                 gas=gas)
+                                 cruise_speed=cruise_speed)
 
 
             if gas > 0:

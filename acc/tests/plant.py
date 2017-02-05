@@ -133,7 +133,7 @@ class Plant(object):
     def current_time(self):
         return float(self.rk.frame) / self.rate
 
-    def step(self, brake=0, gas=0, steer_torque=0, v_lead=0.0, cruise_buttons=None, grade=0.0):
+    def step(self, brake=0, gas=0, steer_torque=0, v_lead=0.0, grade=0.0):
         # dbc_f, sgs, ivs, msgs, cks_msgs, frqs = initialize_can_struct(self.civic, self.brake_only)
 
         distance_lead = self.distance_lead_prev + v_lead * self.ts
@@ -170,31 +170,30 @@ class Plant(object):
                 print(msg)
 
         # ******** publish the car ********
-        vls = [self.speed_sensor(speed), self.speed_sensor(speed),
-               self.speed_sensor(speed), self.speed_sensor(speed),
-               self.angle_steer, 0, self.gear_choice, speed != 0,
-               0, 0, 0, 0,
-               self.v_cruise, not self.seatbelt, self.seatbelt, self.brake_pressed,
-               self.user_gas, cruise_buttons, self.esp_disabled, 0,
-               self.user_brake, self.steer_error, self.speed_sensor(
-                   speed), self.brake_error,
-               self.brake_error, self.gear_shifter, self.main_on, self.acc_status,
-               self.pedal_gas, self.cruise_setting,
-               # left_blinker, right_blinker, counter
-               0, 0, 0,
-               # interceptor_gas
-               0, 0]
+        # vls = [self.speed_sensor(speed), self.speed_sensor(speed),
+        #        self.speed_sensor(speed), self.speed_sensor(speed),
+        #        self.angle_steer, 0, self.gear_choice, speed != 0,
+        #        0, 0, 0, 0,
+        #        self.v_cruise, not self.seatbelt, self.seatbelt, self.brake_pressed,
+        #        self.user_gas, cruise_buttons, self.esp_disabled, 0,
+        #        self.user_brake, self.steer_error, self.speed_sensor(
+        #            speed), self.brake_error,
+        #        self.brake_error, self.gear_shifter, self.main_on, self.acc_status,
+        #        self.pedal_gas, self.cruise_setting,
+        #        # left_blinker, right_blinker, counter
+        #        0, 0, 0,
+        #        # interceptor_gas
+        #        0, 0]
 
-        # TODO: Use vls for something
-        assert vls is not None
+        # # TODO: Use vls for something
+        # assert vls is not None
 
         # ******** update prevs ********
         self.speed_prev = speed
         self.distance_prev = distance
         self.distance_lead_prev = distance_lead
 
-        car_in_front = distance_lead - \
-            distance if self.lead_relevancy else 200.
+        car_in_front = distance_lead - distance if self.lead_relevancy else 200.
 
         self.rk.keep_time()
         return (speed, acceleration, car_in_front, steer_torque)

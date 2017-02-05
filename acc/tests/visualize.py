@@ -141,5 +141,5 @@ class Visualizer(object):
         """ show the final plots """
         #plt.ioff()
         plt.show()
-        input("Press [enter] to close the plots.")
+        # input("Press [enter] to close the plots.")
         plt.close()

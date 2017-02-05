@@ -2,8 +2,8 @@
 import pytest
 
 from .maneuver import Maneuver
-from acc.cruise import control
-
+from acc.cruise import CruiseControl
+control = CruiseControl()
 
 class CV:
     MPH_TO_MS = 1.609 / 3.6
@@ -202,3 +202,16 @@ def test_maneuvers(maneuver, score):
     verbosity = pytest.config.getoption('verbose')
     # assertions in evaluate will make tests fail if needed.
     maneuver.evaluate(control=control, verbosity=verbosity)
+
+def manual_run():
+    # verbosity = pytest.config.getoption('verbose')
+    # assertions in evaluate will make tests fail if needed.
+    maneuver = Maneuver(
+        'while cruising at 40 mph, change cruise speed to 50mph',
+        duration=30.,
+        initial_speed=40. * CV.MPH_TO_MS,
+        cruise_button_presses=[(CB.DECEL_SET, 2.), (0, 2.3),
+                               (CB.RES_ACCEL, 10.), (0, 10.1),
+                               (CB.RES_ACCEL, 10.2), (0, 10.3)]
+    )
+    maneuver.evaluate(control=control, verbosity=3)

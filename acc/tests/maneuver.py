@@ -3,6 +3,17 @@ from .visualize import Visualizer
 import numpy as np
 
 
+class CV:
+    MPH_TO_MS = 1.609 / 3.6
+    MS_TO_MPH = 3.6 / 1.609
+    KPH_TO_MS = 1. / 3.6
+    MS_TO_KPH = 3.6
+    MPH_TO_KPH = 1.609
+    KPH_TO_MPH = 1. / 1.609
+    KNOTS_TO_MS = 1 / 1.9438
+    MS_TO_KNOTS = 1.9438
+
+
 class Maneuver(object):
 
     def __init__(self, title, duration, **kwargs):
@@ -23,7 +34,7 @@ class Maneuver(object):
         self.duration = duration
         self.title = title
 
-    def evaluate(self, control=None, verbosity=0, min_gap=5):
+    def evaluate(self, control=None, verbosity=0, gap=10):
         """runs the plant sim and returns (score, run_data)"""
         plant = Plant(
             lead_relevancy=self.lead_relevancy,
@@ -51,7 +62,7 @@ class Maneuver(object):
         # this will be faster than showing in real time with animate = True
         # max_speed, max_accel, max_score set the maximum for the y-axis
         # TODO: make this dynamic?
-        vis = Visualizer(animate=True, max_speed=100, max_accel=100, max_score=100)
+        vis = Visualizer(animate=False, max_speed=100, max_accel=100, max_score=100)
 
         while plant.current_time() < self.duration:
             while buttons_sorted and plant.current_time() >= buttons_sorted[0][1]:
@@ -71,11 +82,23 @@ class Maneuver(object):
                                                                          cruise_buttons=current_button,
                                                                          grade=grade)
 
-            # If the car in front is less than min_gap away abort.
-            assert car_in_front < min_gap
+            # If the car in front reaches zero, that's a crash.
+            assert car_in_front >= 0
 
-            brake, gas = control(speed, acceleration,
-                                 car_in_front, min_gap, steer_torque)
+            # TODO: Assert the gap parameter is respected during all the maneuver.
+
+            # TODO: Assert the desired speed matches the actual speed at the end of the maneuver.
+
+            # TODO: Figure out how to set the desired speed.
+            desired_speed=50
+
+            brake, gas = control.control(speed=speed,
+                                 acceleration=acceleration,
+                                 car_in_front=car_in_front,
+                                 gap=gap,
+                                 cruise_speed=desired_speed,
+                                 brake=brake,
+                                 gas=gas)
 
             # TODO: Calculate score, for now it always returns 10.
             # It should be 0 when the car crashes and higher if it doesn't.

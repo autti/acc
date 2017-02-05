@@ -98,7 +98,7 @@ class Plant(object):
 
         self.angle_steer = 0.
         self.gear_choice = 0
-        self.speed, self.speed_prev = 0., 0.
+        self.speed, self.speed_prev = speed, 0.
 
         self.esp_disabled = 0
         self.main_on = 1

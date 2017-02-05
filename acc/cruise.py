@@ -1,51 +1,53 @@
-a_d_min = -3
-a_d_max = 5
-K_p = 10
-K_d = .2
-
-d_front_prev = 100
-t_safe = .5 # Safe time to apply brake, .5 s.
 
 
-def control_to_accbrake(control, accel, brake):
-    if control > 0:
-        accel_new = control
-        brake_new = 0
-    if control < 0:
-        accel_new = 0
-        brake_new = control
-    brake = .5 * brake_new + .5 * brake
-    accel = .5 * accel_new + .5 * accel
+class CruiseControl(object):
+    def __init__(self):
+        self.K_p = 10
+        self.K_d = 0
 
-    return accel, brake
+        self.d_front_prev = 100
+        self.t_safe = .5 # Safe time to apply brake, .5 s.
+        self.prev_setpoint = 0
 
+    def control(self, speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None, gas=0, brake=0):
+        """Adaptive Cruise Control
 
+           speed: Current car speed (m/s)
+           acceleration: Current car acceleration (m/s^2)
+           gas: last signal sent. Real number.
+           brake: last signal sent. Real number.
+           car_in_front: distance in meters to the car in front. (m)
+           gap: maximum distance to the car in front (m)
+        """
+        gas = 0
+        brake = 0
 
-def control_car(speed, car_in_front, acceleration, brake, min_gap):
-    delta_distance = car_in_front - 2 * min_gap
-
-    if delta_distance < 0:
-        control = -K_p * delta_distance - K_d * car_in_front
-        if control > a_d_max:
-            control = a_d_max
-        elif control < a_d_min:
-            control = a_d_min
-    else:
-        # control = K_p*(speed - cruise_speed)
-        # There is no logic for doing this. Control should be used to control the cruise
-        # speed but we don't have that parameter as of now.
-        control = 0.5
-    accel, brake = control_to_accbrake(control, acceleration, brake)
-
-    return accel, brake
+        # If the cruise control speed is not set, let's give the variable a sensible setting.
+        if cruise_speed is None:
+            cruise_speed = speed
 
 
-def control(speed, acceleration, car_in_front, min_gap, steer_torque):
-    """Adaptive Cruise Control
-    """
-    # --- Implement your solution here ---#
-    brake = -acceleration
-    gas, brake = control_car(speed, car_in_front, acceleration, brake, 10)
-    # ------------------------------------#
+        delta_distance = car_in_front - 2 * gap
 
-    return brake, gas
+        if delta_distance > 0:
+            # if the distance is not too close maintain cruise speed
+            set_point = cruise_speed - speed
+        else:
+            # But override it if we are too close to the car in front.
+            set_point = delta_distance
+
+        control = self.K_p * set_point + self.K_d * (set_point - self.prev_setpoint)
+        if control > 1:
+            control = 1
+        elif control < -1:
+            control = -1
+
+        if control > 0:
+            gas = control
+        if control < 0:
+            gas = control
+
+        #------set variables from previous value-----
+        self.prev_setpoint = set_point
+
+        return brake, gas

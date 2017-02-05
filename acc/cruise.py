@@ -27,7 +27,6 @@ class CruiseControl(object):
 
         # If the cruise control speed is not set, let's give the variable a sensible setting.
         if cruise_speed is None:
-            print('her....................................')
             cruise_speed = speed
 
 

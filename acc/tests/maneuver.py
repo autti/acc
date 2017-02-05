@@ -95,8 +95,6 @@ class Maneuver(object):
                                  gap=gap,
                                  cruise_speed=cruise_speed)
 
-            print(gas, brake)
-
 
             if gas > 0:
                 # accelerating

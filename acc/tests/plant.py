@@ -52,10 +52,10 @@ def car_plant(pos, speed, grade, gas, brake):
     g = 9.81
     mass = 1700
     aero_cd = 0.3
-    # force_peak is maximum acceleration allowed * mass
-    force_peak = mass * 0.4 * g
-    # force_brake_peak is maximum decceleration allowed * mass
-    force_brake_peak = -mass * 0.9 * g
+    # force_peak is set to get maximum acceleration allowed of 0.4g
+    force_peak = mass * 1.24
+    # force_brake_peak is set to get maximum decceleration allowed -0.9g
+    force_brake_peak = -mass * 43
     power_peak = 100000   # 100kW
     speed_base = power_peak / force_peak
     rolling_res = 0.01

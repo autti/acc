@@ -15,6 +15,8 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, desired_speed=None
     K_p = 10
     K_d = .2
 
+    control = 0
+
     # If the cruise control speed is not set, let's give the variable a sensible setting.
     if desired_speed is None:
         desired_speed = speed
@@ -25,7 +27,7 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, desired_speed=None
     brake = -acceleration
     gas = 0
 
-    delta_distance = car_in_front - 2 * min_gap
+    delta_distance = car_in_front - 2 * gap
 
     # Figure out what control signal should be sent to try to match the required speed
     if speed != desired_speed:

@@ -72,17 +72,22 @@ class Maneuver(object):
                                                                          grade=grade)
 
             # If the car in front reaches zero, that's a crash.
-            assert car_in_front <= 0
+            assert car_in_front >= 0
 
             # TODO: Assert the gap parameter is respected during all the maneuver.
 
             # TODO: Assert the desired speed matches the actual speed at the end of the maneuver.
 
-            brake, gas = control(speed, acceleration,
-                                 car_in_front, min_gap, steer_torque)
+            # TODO: Figure out how to set the desired speed.
+            desired_speed=None
 
-            # TODO: Calculate score, for now it always returns 10.
-            # It should be 0 when the car crashes and higher if it doesn't.
+            brake, gas = control(speed=speed,
+                                 acceleration=acceleration,
+                                 car_in_front=car_in_front,
+                                 gap=gap,
+                                 desired_speed=desired_speed,
+                                 brake=brake,
+                                 gas=gas)
 
             if gas > 0:
                 # accelerating

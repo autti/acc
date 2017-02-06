@@ -129,7 +129,7 @@ maneuvers = [
         duration=30.,
         initial_speed=0.,
         lead_relevancy=True,
-        initial_distance_lead=4.,
+        initial_distance_lead=11.,
         speed_lead_values=[0, 0, 45],
         speed_lead_breakpoints=[0, 10., 40.],
         cruise_speeds=[(30., 0)]
@@ -159,7 +159,7 @@ maneuvers = [
         duration=30.,
         initial_speed=10.,
         lead_relevancy=True,
-        initial_distance_lead=10.,
+        initial_distance_lead=20.,
         speed_lead_values=[20., 0.],
         speed_lead_breakpoints=[1., 11.],
         cruise_speeds=[(20., 0)]
@@ -181,4 +181,4 @@ def test_maneuvers(maneuver, score):
 def manual_run():
     # verbosity = pytest.config.getoption('verbose')
     # assertions in evaluate will make tests fail if needed.
-    maneuvers[2].evaluate(control=control, verbosity=3)
+    maneuvers[-1].evaluate(control=control, verbosity=3)

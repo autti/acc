@@ -13,7 +13,8 @@ class CruiseControl(object):
         self.maintaining_distance = False
 
     def distance_to_zero(self, speed):
-        return speed**2 / (2 * 8.7)
+        # max_accel = 8.7
+        return speed**2 / (2 * 5)
 
     def control(self, speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None):
         """Adaptive Cruise Control
@@ -31,7 +32,8 @@ class CruiseControl(object):
             cruise_speed = speed
 
 
-        delta_distance = car_in_front - gap - self.distance_to_zero(speed)
+        delta_distance = car_in_front - 2 * gap - self.distance_to_zero(speed)
+        # print(delta_distance, self.distance_to_zero(speed))
 
         # if the car ahead does not allow to get to cruise speed
         # use safe following distance as a measure until cruise speed is reached again

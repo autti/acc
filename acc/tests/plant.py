@@ -126,11 +126,6 @@ class Plant(object):
         self.rk = Ratekeeper(rate, print_delay_threshold=100)
         self.ts = 1. / rate
 
-    def speed_sensor(self, speed):
-        if speed < 0.3:
-            return 0
-        else:
-            return speed
 
     def current_time(self):
         return float(self.rk.frame) / self.rate

@@ -34,7 +34,7 @@ class Maneuver(object):
         self.duration = duration
         self.title = title
 
-    def evaluate(self, control=None, verbosity=0, gap=10):
+    def evaluate(self, control=None, verbosity=0, gap=10, plot=False, animate=False):
         """runs the plant sim and returns (score, run_data)"""
         plant = Plant(
             lead_relevancy=self.lead_relevancy,
@@ -68,7 +68,7 @@ class Maneuver(object):
         # TODO: make this dynamic?
 
         if verbosity >= 4:
-            vis = Visualizer(animate=True, max_speed=80, max_accel=10, max_score=20)
+            vis = Visualizer(animate=animate, show=plot, max_speed=80, max_accel=10, max_score=20)
 
         while plant.current_time() < self.duration:
             while speeds_sorted and plant.current_time() >= speeds_sorted[0][1]:
@@ -143,7 +143,7 @@ class Maneuver(object):
         # TODO: if there is a car in front, assert the speed matches that car's speed at the end of the manuever.
 
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
-        if verbosity >= 4:
+        if verbosity >= 4 and plot:
             vis.show_final_plots()
 
         return

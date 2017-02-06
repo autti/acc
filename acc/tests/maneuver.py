@@ -53,7 +53,8 @@ class Maneuver(object):
         # dictionary used by the cruise control function to maintan state between invocations.
         state = None
 
-        previous_state = 0 # 3 possible states(accelerating(1), not accelerating(0), braking(-1))
+        # 3 possible states(accelerating(1), not accelerating(0), braking(-1))
+        previous_state = 0
         score = 0.
         prev_accel = 0.
         # TODO: calibrate this threshold to denote maximum discomfort allowed
@@ -96,7 +97,6 @@ class Maneuver(object):
                                         gap=gap,
                                         cruise_speed=cruise_speed)
 
-
             if gas > 0:
                 # accelerating
                 new_state = 1
@@ -111,7 +111,7 @@ class Maneuver(object):
             # TODO: add division by exact time, if relevent(did not delve deep into timekeeping)
             rate_accel = acceleration - prev_accel
             prev_accel = acceleration
-            
+
             # based on acceptable jerk values given in
             # A SURVEY OF LONGITUDINAL ACCELERATION COMFORT STUDIES
             # IN GROUND TRANSPORTATION VEHICLES by l. l. HOBEROCK
@@ -127,9 +127,9 @@ class Maneuver(object):
             # this updates the plots with latest state
 
             if verbosity >= 4:
-                vis.update_data(cur_time=plant.current_time(), speed=speed, \
-                    acceleration=acceleration, gas_control=gas, brake_control=brake, \
-                    car_in_front=car_in_front, steer_torque=steer_torque, score=score)
+                vis.update_data(cur_time=plant.current_time(), speed=speed,
+                                acceleration=acceleration, gas_control=gas, brake_control=brake,
+                                car_in_front=car_in_front, steer_torque=steer_torque, score=score)
 
         score /= self.duration
         assert score <= score_threshold
@@ -142,9 +142,7 @@ class Maneuver(object):
 
         # TODO: if there is a car in front, assert the speed matches that car's speed at the end of the manuever.
 
-
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
-
         if verbosity >= 4:
             vis.show_final_plots()
 

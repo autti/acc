@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 
+
 class CV:
     """ Conversion constants """
     # later can move to a common utilities file to avoid duplication?
@@ -15,6 +16,7 @@ class CV:
     KNOTS_TO_MS = 1 / 1.9438
     MS_TO_KNOTS = 1.9438
 
+
 class Visualizer(object):
     """ Visualization class """
     # to use call
@@ -26,9 +28,10 @@ class Visualizer(object):
     # clean up after the state transition loop (this also makes sure that the plots do not disappear
     # after each maneuver before pressing [Enter] :
     #   vis.show_final_plots()
+
     def __init__(self, animate, max_speed, max_accel, max_score):
         # Set the figure parameters
-        font = {'size'   : 9}
+        font = {'size': 9}
         mpl.rc('font', **font)
 
         self.animate = animate
@@ -39,7 +42,7 @@ class Visualizer(object):
         ax1s = ax1.twinx()
         ax1ss = ax1.twinx()
         ax2 = plt.subplot2grid((2, 2), (0, 1))
-        ax3 = plt.subplot2grid((2, 2), (1, 0)) #, colspan=2, rowspan=1)
+        ax3 = plt.subplot2grid((2, 2), (1, 0))  # , colspan=2, rowspan=1)
         ax4 = plt.subplot2grid((2, 2), (1, 1))
         ax4s = ax4.twinx()
 
@@ -51,12 +54,11 @@ class Visualizer(object):
         # set y-limits
         ax1.set_ylim(-max_accel, max_accel)
         ax1s.set_ylim(-max_speed, max_speed)
-        ax1ss.set_ylim(-max_speed*CV.MS_TO_MPH, max_speed*CV.MS_TO_MPH)
+        ax1ss.set_ylim(-max_speed * CV.MS_TO_MPH, max_speed * CV.MS_TO_MPH)
         ax2.set_ylim(0, 300)
         ax3.set_ylim(0, max_score)
         ax4.set_ylim(0, max_accel)
         ax4s.set_ylim(0, max_accel)
-
 
         fig.subplots_adjust(wspace=0.5)
         ax1ss.spines['right'].set_position(('axes', 1.15))
@@ -105,20 +107,24 @@ class Visualizer(object):
         self.brake_control = np.zeros(0)
 
         # set plots
-        self.accel_plot, = ax1.plot(self.t_values, self.plant_accel, 'b-', label="Acceleration")
-        self.vel_plot, = ax1s.plot(self.t_values, self.plant_vel, 'g-', \
-            label="Speed")
-        self.car_in_front_plot, = ax2.plot(self.t_values, self.car_in_front, 'b-', \
-            label="Distance to the car in frontr")
-        self.score_plot, = ax3.plot(self.t_values, self.score, 'b-', label="controller score")
-        self.gas_control_plot, = ax4.plot(self.t_values, self.gas_control, 'b-', label="gas")
-        self.brake_control_plot, = ax4.plot(self.t_values, self.brake_control, 'g-', label="brake")
+        self.accel_plot, = ax1.plot(
+            self.t_values, self.plant_accel, 'b-', label="Acceleration")
+        self.vel_plot, = ax1s.plot(self.t_values, self.plant_vel, 'g-',
+                                   label="Speed")
+        self.car_in_front_plot, = ax2.plot(self.t_values, self.car_in_front, 'b-',
+                                           label="Distance to the car in frontr")
+        self.score_plot, = ax3.plot(
+            self.t_values, self.score, 'b-', label="controller score")
+        self.gas_control_plot, = ax4.plot(
+            self.t_values, self.gas_control, 'b-', label="gas")
+        self.brake_control_plot, = ax4.plot(
+            self.t_values, self.brake_control, 'g-', label="brake")
 
         # set lagends
-        ax1.legend([self.vel_plot, self.accel_plot], [self.vel_plot.get_label(), \
-            self.accel_plot.get_label()])
-        ax4.legend([self.gas_control_plot, self.brake_control_plot], \
-            [self.gas_control_plot.get_label(), self.brake_control_plot.get_label()])
+        ax1.legend([self.vel_plot, self.accel_plot], [self.vel_plot.get_label(),
+                                                      self.accel_plot.get_label()])
+        ax4.legend([self.gas_control_plot, self.brake_control_plot],
+                   [self.gas_control_plot.get_label(), self.brake_control_plot.get_label()])
 
         # set time limits for sliding
         self.tmin = 0.0
@@ -130,8 +136,8 @@ class Visualizer(object):
             plt.show()
             plt.pause(0.001)
 
-    def update_data(self, cur_time, speed, acceleration, gas_control, brake_control, \
-        car_in_front, steer_torque, score):
+    def update_data(self, cur_time, speed, acceleration, gas_control, brake_control,
+                    car_in_front, steer_torque, score):
         """ called to update the state saved in the visualizer """
         # the plots are updated when sufficient time has passed
         # TODO: add a robust way to make this user-specified
@@ -153,11 +159,15 @@ class Visualizer(object):
             self.brake_control_plot.set_data(self.t_values, self.brake_control)
 
             # slide plots
-            if cur_time >= self.tmax-1.0:
-                self.vel_plot.axes.set_xlim(cur_time-self.tmax+1.0, cur_time+1.0)
-                self.car_in_front_plot.axes.set_xlim(cur_time-self.tmax+1.0, cur_time+1.0)
-                self.score_plot.axes.set_xlim(cur_time-self.tmax+1.0, cur_time+1.0)
-                self.gas_control_plot.axes.set_xlim(cur_time-self.tmax+1.0, cur_time+1.0)
+            if cur_time >= self.tmax - 1.0:
+                self.vel_plot.axes.set_xlim(
+                    cur_time - self.tmax + 1.0, cur_time + 1.0)
+                self.car_in_front_plot.axes.set_xlim(
+                    cur_time - self.tmax + 1.0, cur_time + 1.0)
+                self.score_plot.axes.set_xlim(
+                    cur_time - self.tmax + 1.0, cur_time + 1.0)
+                self.gas_control_plot.axes.set_xlim(
+                    cur_time - self.tmax + 1.0, cur_time + 1.0)
 
             if self.animate:
                 plt.show()
@@ -165,7 +175,7 @@ class Visualizer(object):
 
     def show_final_plots(self):
         """ show the final plots """
-        #plt.ioff()
+        # plt.ioff()
         plt.show()
         # input("Press [enter] to close the plots.")
         plt.close()

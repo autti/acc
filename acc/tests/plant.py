@@ -126,7 +126,6 @@ class Plant(object):
         self.rk = Ratekeeper(rate, print_delay_threshold=100)
         self.ts = 1. / rate
 
-
     def current_time(self):
         return float(self.rk.frame) / self.rate
 
@@ -156,7 +155,7 @@ class Plant(object):
             v_rel = 0.
 
         # set sensible value to acceleration for first iteration
-        if self.acceleration_prev == None:
+        if self.acceleration_prev is None:
             self.acceleration_prev = acceleration
         # print at 5hz
         # if (self.rk.frame % (self.rate / 5)) == 0:

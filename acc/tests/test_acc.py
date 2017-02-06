@@ -177,8 +177,10 @@ def test_maneuvers(maneuver, score):
     # assertions in evaluate will make tests fail if needed.
     maneuver.evaluate(control=control, verbosity=verbosity)
 
-# TO BE DELETED LATER. MADE FOR CONVINIENCE IN TESTS
-def manual_run():
+
+def test_verbose_run():
+    """Runs tests in verbose mode with plotting and all.
+    """
     # verbosity = pytest.config.getoption('verbose')
     # assertions in evaluate will make tests fail if needed.
-    maneuvers[11].evaluate(control=control, verbosity=3)
+    maneuvers[11].evaluate(control=control, verbosity=5)

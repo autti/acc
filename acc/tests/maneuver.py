@@ -64,7 +64,7 @@ class Maneuver(object):
         # TODO: make this dynamic?
 
         if verbosity >= 4:
-            vis = Visualizer(animate=True, max_speed=100, max_accel=100, max_score=100)
+            vis = Visualizer(animate=True, max_speed=80, max_accel=10, max_score=20)
 
         while plant.current_time() < self.duration:
             while speeds_sorted and plant.current_time() >= speeds_sorted[0][1]:

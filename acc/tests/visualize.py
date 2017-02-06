@@ -29,7 +29,7 @@ class Visualizer(object):
     # after each maneuver before pressing [Enter] :
     #   vis.show_final_plots()
 
-    def __init__(self, animate, max_speed, max_accel, max_score):
+    def __init__(self, animate, max_speed, max_accel, max_score, show=True):
         # Set the figure parameters
         font = {'size': 9}
         mpl.rc('font', **font)

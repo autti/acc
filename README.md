@@ -7,6 +7,29 @@ Adaptive Cruise Control. Udacity micro challenge.
 # WHAT SHOULD I DO?
 Look for `cruise.py` and implement the `control` function, make the unit tests be more strict with what they check (lower tolerance to differences for example) and submit a pull request.
 
+Here is an example control function that does nothing:
+
+```
+def control(speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None, state=None):
+        """Adaptive Cruise Control
+           speed: Current car speed (m/s)
+           acceleration: Current car acceleration (m/s^2)
+           gas: last signal sent. Real number.
+           brake: last signal sent. Real number.
+           car_in_front: distance in meters to the car in front. (m)
+           gap: maximum distance to the car in front (m)
+           cruise_speed: desired speed, set via the cruise control buttons. (m/s)
+           status: a convenience dictionary to keep state between runs.
+        """
+        if state is None:
+            state = {}
+        
+        brake = 0
+        gas = 0
+        
+        return gas, brake, state
+```
+
 ### Unit tests.
 
 There are tests that assert you have not hit the car in front, that you are reasonably close to the desired speed at the end of the maneuver and that there hasn't been a lot of accel/brake so that it's uncomfortable for the user.

@@ -9,7 +9,7 @@ Look for `cruise.py` and implement the `control` function, make the unit tests b
 
 Here is an example control function that does nothing:
 
-```
+```python
 def control(speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None, state=None):
         """Adaptive Cruise Control
            speed: Current car speed (m/s)

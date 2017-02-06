@@ -2,8 +2,8 @@
 import pytest
 
 from .maneuver import Maneuver
-from acc.cruise import CruiseControl
-control = CruiseControl()
+from acc.cruise import control
+
 
 class CV:
     MPH_TO_MS = 1.609 / 3.6
@@ -181,6 +181,5 @@ def test_maneuvers(maneuver, score):
 def test_verbose_run():
     """Runs tests in verbose mode with plotting and all.
     """
-    # verbosity = pytest.config.getoption('verbose')
     # assertions in evaluate will make tests fail if needed.
-    maneuvers[11].evaluate(control=control, verbosity=5)
+    maneuvers[2].evaluate(control=control, verbosity=5)

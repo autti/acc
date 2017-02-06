@@ -51,10 +51,10 @@ class Maneuver(object):
         steer_torque = 0
 
         previous_state = 0 # 3 possible states(accelerating(1), not accelerating(0), braking(-1))
-        neg_score = 0.
+        score = 0.
         prev_accel = 0.
         # TODO: calibrate this threshold to denote maximum discomfort allowed
-        neg_score_threshold = 20.
+        score_threshold = 20.
         # TODO: calibrate this constant for scaling rate of acceleration
         accel_const = 1.
 
@@ -62,6 +62,7 @@ class Maneuver(object):
         # this will be faster than showing in real time with animate = True
         # max_speed, max_accel, max_score set the maximum for the y-axis
         # TODO: make this dynamic?
+
         if verbosity >= 4:
             vis = Visualizer(animate=True, max_speed=100, max_accel=100, max_score=100)
 
@@ -111,26 +112,32 @@ class Maneuver(object):
             # based on acceptable jerk values given in
             # A SURVEY OF LONGITUDINAL ACCELERATION COMFORT STUDIES
             # IN GROUND TRANSPORTATION VEHICLES by l. l. HOBEROCK
-            assert -0.3 * 9.81 < rate_accel < 0.3 * 9.81
+            # not sure about the validity, real tests should proove this
+            # uncomment this with the acceptable values, this will affect pid consts
+            # assert -0.3 * 9.81 < rate_accel < 0.3 * 9.81
 
-            # The higher the value of neg_score, worse the controller.
+            # The higher the value of score, worse the controller.
             # multiplication with rate_accel scales the change based on the speed of change.
-            neg_score += abs((new_state - previous_state) * rate_accel * accel_const)
+            score += abs((new_state - previous_state) + rate_accel * accel_const)
             previous_state = new_state
 
             # this updates the plots with latest state
+
             if verbosity >= 4:
                 vis.update_data(cur_time=plant.current_time(), speed=speed, \
                     acceleration=acceleration, gas_control=gas, brake_control=brake, \
-                    car_in_front=car_in_front, steer_torque=steer_torque, score=neg_score)
+                    car_in_front=car_in_front, steer_torque=steer_torque, score=score)
 
-        neg_score /= self.duration
-        assert neg_score <= neg_score_threshold
+        score /= self.duration
+        assert score <= score_threshold
 
         # Assert the desired speed matches the actual speed at the end of the maneuver.
-        assert cruise_speed - 1. < speed < cruise_speed + 1.
+        # only valid when lead distance is greater than distance to be maintained
+        if not control.maintaining_distance:
+            assert cruise_speed - 1. < speed < cruise_speed + 1.
 
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
+
         if verbosity >= 4:
             vis.show_final_plots()
 

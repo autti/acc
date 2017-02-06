@@ -27,11 +27,6 @@ class CruiseControl(object):
            gap: maximum distance to the car in front (m)
         """
 
-        # If the cruise control speed is not set, let's give the variable a sensible setting.
-        if cruise_speed is None:
-            cruise_speed = speed
-
-
         delta_distance = car_in_front - 2 * gap - self.distance_to_zero(speed)
         # print(delta_distance, self.distance_to_zero(speed))
 

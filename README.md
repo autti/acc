@@ -5,7 +5,40 @@
 Adaptive Cruise Control. Udacity micro challenge.
 
 # WHAT SHOULD I DO?
-Look for `cruise.py` and implement the `control` function.
+Look for `cruise.py` and implement the `control` function, make the unit tests be more strict with what they check (lower tolerance to differences for example) and submit a pull request.
+
+### Unit tests.
+
+There are tests that assert you have not hit the car in front, that you are reasonably close to the desired speed at the end of the maneuver and that there hasn't been a lot of accel/brake so that it's uncomfortable for the user.
+
+You can run them by doing:
+
+```
+pytest
+```
+
+If you want to see textual information for each of the variables you can increase the verbosity level to:
+
+```
+pytest -vvv
+```
+If you want to see a plot at the end of each maneuver, then add another `v` and one more if you want to see it animated (a lot slower).
+
+When debugging, it is recommended to use the test_verbose_run with the maneuver you want to debug and run it using the `-k` option pytest provides.
+
+```python
+def test_verbose_run():
+    """Runs tests in verbose mode with plotting and all.
+    """
+    # assertions in evaluate will make tests fail if needed.
+    maneuvers[2].evaluate(control=control, verbosity=5, animate=True, plot=True)
+```
+    
+Like this:
+```
+pytest -s -l -k test_verbose_run
+```
+
 
 # More information
 

@@ -188,4 +188,4 @@ def test_verbose_run():
     """Runs tests in verbose mode with plotting and all.
     """
     # assertions in evaluate will make tests fail if needed.
-    maneuvers[1].evaluate(control=control, verbosity=5, animate=True, plot=True)
+    maneuvers[2].evaluate(control=control, verbosity=5, animate=True, plot=True)

@@ -88,6 +88,10 @@ class Maneuver(object):
                                                                          v_lead=speed_lead,
                                                                          grade=grade)
 
+            # limiting the value of acceleration betwen a range
+            # i feel this should be an assertion
+            acceleration = np.clip(acceleration, -0.9 * 9.81, 0.4 * 9.81)
+
             # Assert the gap parameter is respected during all the maneuver.
             assert car_in_front >= gap
 

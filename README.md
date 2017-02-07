@@ -88,7 +88,7 @@ python setup.py test
  - [X] Implement plotting of PID curves to compare solutions.
  - [X] Replace `gas=0` and `brake=0` for a simple solution that passes the tests.
  - [X] Tune PID parameters to pass tests
- - [ ] Speed up tests
+ - [X] Speed up tests
  - [ ] Reduce the score threshold back to a small number (10, right now it is 200).
  - [ ] Reduce tolerance in the speed check to a small number (1e-2, right now it is 2e0).
  - [ ] Find optimal values of max acceleration, max deceleration and max jerk.

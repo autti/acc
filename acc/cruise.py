@@ -14,11 +14,11 @@ def control(speed=0, acceleration=0, car_in_front=200, gap=5, cruise_speed=None,
         """
 
         if state is None:
-            state = dict(K_p=0.15, K_d=0., K_i=0.0003, d_front_prev=100,
+            state = dict(K_p=0.15, K_d=1., K_i=0.0003, d_front_prev=100,
                          t_safe=.5, prev_setpoint=0., integral_setpoint=0.,
                          maintaining_distance=False)
 
-        delta_distance = car_in_front - 2 * gap - speed**2 / (2 * 5)
+        delta_distance = car_in_front - 2 * gap - speed**2 / (2 * 2.11)
 
         # if the car ahead does not allow to get to cruise speed
         # use safe following distance as a measure until cruise speed is reached again

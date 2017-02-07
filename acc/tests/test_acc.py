@@ -166,6 +166,15 @@ maneuvers = [
     )
 ]
 
+dummy_maneuvers=[
+    Maneuver(
+        "do nothing for 0.1 seconds",
+        duration=0.1,
+        initial_speed=20.,
+        cruise_speeds=[(20.,0)]
+    )
+]
+
 expected = [None for m in maneuvers]
 
 testdata = zip(maneuvers, expected)
@@ -188,4 +197,4 @@ def test_verbose_run():
     """Runs tests in verbose mode with plotting and all.
     """
     # assertions in evaluate will make tests fail if needed.
-    maneuvers[2].evaluate(control=control, verbosity=5, animate=True, plot=True)
+    dummy_maneuvers[0].evaluate(control=control, verbosity=5, animate=True, plot=True)

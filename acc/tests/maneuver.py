@@ -69,7 +69,7 @@ class Maneuver(object):
 
         if verbosity >= 4:
             vis = Visualizer(animate=animate, show=plot, max_speed=80, max_accel=10, max_score=20)
-
+            
         while plant.current_time() < self.duration:
             while speeds_sorted and plant.current_time() >= speeds_sorted[0][1]:
                 # getting the current cruise speed

@@ -174,12 +174,18 @@ testdata = zip(maneuvers, expected)
 @pytest.mark.parametrize("maneuver,score", testdata, ids=[m.title for m in maneuvers])
 def test_maneuvers(maneuver, score):
     verbosity = pytest.config.getoption('verbose')
+    plot = False
+    animate = False
+    if verbosity > 4:
+        plot = True
+    if verbosity > 5:
+        animate = True
     # assertions in evaluate will make tests fail if needed.
-    maneuver.evaluate(control=control, verbosity=verbosity)
+    maneuver.evaluate(control=control, plot=plot, animate=animate, verbosity=verbosity)
 
 
 def test_verbose_run():
     """Runs tests in verbose mode with plotting and all.
     """
     # assertions in evaluate will make tests fail if needed.
-    maneuvers[2].evaluate(control=control, verbosity=5)
+    maneuvers[1].evaluate(control=control, verbosity=5, animate=True, plot=True)

@@ -33,12 +33,6 @@ class Ratekeeper(object):
     def frame(self):
         return self._frame
 
-    # Maintain loop rate by calling this at the end of each loop
-    def keep_time(self):
-        self.monitor_time()
-        if self._remaining > 0:
-            time.sleep(self._remaining)
-
     # this only monitor the cumulative lag, but does not enforce a rate
     def monitor_time(self):
         remaining = self._next_frame_time - sec_since_boot()
@@ -89,7 +83,7 @@ def car_plant(pos, speed, grade, gas, brake):
 class Plant(object):
     messaging_initialized = False
 
-    def __init__(self, lead_relevancy=False, rate=100,
+    def __init__(self, lead_relevancy=False, rate=10,
                  speed=0.0, distance_lead=2.0,
                  verbosity=0):
         self.rate = rate
@@ -195,5 +189,5 @@ class Plant(object):
 
         car_in_front = distance_lead - distance if self.lead_relevancy else 200.
 
-        self.rk.keep_time()
+        self.rk.monitor_time()
         return (speed, acceleration, car_in_front, steer_torque)

@@ -13,6 +13,38 @@ class CV:
     KNOTS_TO_MS = 1 / 1.9438
     MS_TO_KNOTS = 1.9438
 
+# Minimum safe stopping distance.
+# http://www.sdt.com.au/safedrive-directory-STOPPINGDISTANCE.htm
+# (x, y) = (speed in kph, distance in meters)
+SAFE_DISTANCE = (
+    (20, 3),
+    (30, 5),
+    (40, 9),
+    (50, 15),
+    (60, 21),
+    (70, 29),
+    (80, 38),
+    (90, 47),
+    (100, 60),
+    (110, 73),
+    (120, 86),
+    (130, 98),
+    (140, 123),
+    (160, 136),
+    (170, 151),
+    (180, 166),
+)
+
+
+def safe_gap(v):
+    x = np.array([x * CV.KPH_TO_MS for x, y in SAFE_DISTANCE])
+    y = np.array([y for x, y in SAFE_DISTANCE])
+    z = np.polyfit(x, y, 2)
+    p = np.poly1d(z)
+
+    return p(v)
+
+
 
 class Maneuver(object):
 
@@ -34,7 +66,7 @@ class Maneuver(object):
         self.duration = duration
         self.title = title
 
-    def evaluate(self, control=None, verbosity=0, gap=10, plot=False, animate=False):
+    def evaluate(self, control=None, verbosity=0, plot=False, animate=False):
         """runs the plant sim and returns (score, run_data)"""
         plant = Plant(
             lead_relevancy=self.lead_relevancy,
@@ -93,6 +125,7 @@ class Maneuver(object):
             acceleration = np.clip(acceleration, -0.9 * 9.81, 0.4 * 9.81)
 
             # Assert the gap parameter is respected during all the maneuver.
+            gap = safe_gap(speed)
             assert car_in_front >= gap
 
             brake, gas, state = control(speed=speed,

@@ -130,7 +130,7 @@ class Plant(object):
         # ******** run the car ********
         speed, acceleration = car_plant(
             self.distance_prev, self.speed_prev, grade, gas, brake)
-        distance = self.distance_prev + speed * self.ts
+        distance = self.distance_prev + speed * self.ts + self.ts**2*acceleration*.5
         speed = self.speed_prev + self.ts * acceleration
         if speed <= 0:
             speed = 0

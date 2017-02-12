@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import pytest
-import shutil
-import os
+
 from .maneuver import Maneuver
 from acc.cruise import control
 
@@ -190,7 +189,6 @@ def test_maneuvers(maneuver, score):
         plot = True
     if verbosity > 5:
         animate = True
-
     # assertions in evaluate will make tests fail if needed.
     maneuver.evaluate(control=control, plot=plot, animate=animate, verbosity=verbosity)
 

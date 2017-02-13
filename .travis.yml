@@ -19,6 +19,7 @@ install:
   - python setup.py -q install
   - pip install numpy
   - pip install matplotlib
+  - pip install pytest-html
 
 before_script:
   - export DISPLAY=:'99.0'

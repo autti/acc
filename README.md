@@ -47,9 +47,6 @@ pytest -vvv
 ```
 If you want to see a plot at the end of each maneuver, then add another `v` and one more if you want to see it animated (a lot slower).
 
-Link to tests:
-
-report.html
 
 ### Debugging
 

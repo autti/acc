@@ -47,6 +47,7 @@ pytest -vvv
 ```
 If you want to see a plot at the end of each maneuver, then add another `v` and one more if you want to see it animated (a lot slower).
 
+
 ### Debugging
 
 When debugging, it is recommended to use the test_verbose_run with the maneuver you want to debug and run it using the `-k` option pytest provides.

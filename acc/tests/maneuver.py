@@ -100,8 +100,8 @@ class Maneuver(object):
         # TODO: make this dynamic?
 
         if verbosity >= 4:
-            vis = Visualizer(animate=animate, show=plot, max_speed=80, max_accel=10, max_score=20)
-            
+            vis = Visualizer(title=self.title, animate=animate, show=plot, max_speed=80, max_accel=10, max_score=20)
+
         while plant.current_time() < self.duration:
             while speeds_sorted and plant.current_time() >= speeds_sorted[0][1]:
                 # getting the current cruise speed
@@ -182,5 +182,7 @@ class Maneuver(object):
         # this cleans up the plots for this maneuver and pauses until user presses [Enter]
         if verbosity >= 4 and plot:
             vis.show_final_plots()
+        if verbosity >= 4:
+            vis.save_final_plots()
 
         return

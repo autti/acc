@@ -1,4 +1,7 @@
 
+import os
+import re
+import datetime
 import numpy as np
 import matplotlib as mpl
 from matplotlib import pyplot as plt
@@ -29,11 +32,11 @@ class Visualizer(object):
     # after each maneuver before pressing [Enter] :
     #   vis.show_final_plots()
 
-    def __init__(self, animate, max_speed, max_accel, max_score, show=True):
+    def __init__(self, title, animate, max_speed, max_accel, max_score, show=True):
         # Set the figure parameters
         font = {'size': 9}
         mpl.rc('font', **font)
-
+        self.title = title
         self.animate = animate
         fig = plt.figure(num=0, figsize=(15, 8))
 
@@ -135,6 +138,71 @@ class Visualizer(object):
             plt.ion()
             plt.show()
             plt.pause(0.001)
+
+    def save_final_plots(self):
+        """ called to add plots to html file in svg format """
+        regex = re.compile('[,\/.!?]')
+        directory = regex.sub('', self.title)
+
+        if not os.path.exists('testplots' + '/' + directory):
+            os.makedirs('testplots' + '/' + directory)
+
+
+        plt_num = 0
+
+        # speed chart ===================
+        plt_num += 1
+        plt.figure(plt_num)
+        plt.plot(
+          np.array(self.t_values), np.array(self.plant_vel) * CV.MS_TO_MPH, 'g',
+          #np.array(self.t_values), np.array(self.plant_accel), 'b',
+        )
+        plt.xlabel('Time [s]')
+        plt.ylabel('Speed [mph]')
+        #plt.legend(['speed', 'pid speed', 'Target (lead) speed', 'Cruise speed', 'Lead speed'], loc=0)
+        plt.grid()
+        plt.savefig("/".join(['testplots', directory, 'speeds.svg']), dpi=1000)
+
+        # acceleration chart ===================
+        plt_num += 1
+        plt.figure(plt_num)
+        plt.plot(
+          self.t_values,self.plant_accel, 'b',
+        )
+        plt.xlabel('Time [s]')
+        plt.ylabel('Acceleration [m/s^2]')
+        plt.grid()
+        plt.savefig("/".join(['testplots', directory, 'accelerations.svg']), dpi=1000)
+
+
+        # car in front chart ===================
+        plt_num += 1
+        plt.figure(plt_num)
+        plt.plot(
+          self.t_values,self.car_in_front, 'b',
+        )
+        plt.xlabel('Time [s]')
+        plt.ylabel('Distance to the Car in Front')
+        plt.grid()
+        plt.savefig("/".join(['testplots', directory, 'car_in_front.svg']), dpi=1000)
+
+
+        # gas and break
+        plt_num += 1
+        plt.figure(plt_num)
+        plt.plot(
+          self.t_values, self.gas_control, 'b',
+          self.t_values, self.brake_control, 'g',
+        )
+        plt.xlabel('Time [s]')
+        plt.ylabel('Gas and break')
+        plt.legend(['gas', 'break'], loc=0)
+        plt.grid()
+        plt.savefig("/".join(['testplots', directory, 'pedals.svg']), dpi=1000)
+
+
+        plt.close("all")
+
 
     def update_data(self, cur_time, speed, acceleration, gas_control, brake_control,
                     car_in_front, steer_torque, score):
